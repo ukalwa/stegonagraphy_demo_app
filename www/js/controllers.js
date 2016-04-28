@@ -31,7 +31,7 @@ angular.module('starter.controllers', [])
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+    //console.log('Doing login', $scope.loginData);
 
     // Simulate a login delay. Remove this and replace with your login
     // code if using a login system
@@ -111,6 +111,7 @@ angular.module('starter.controllers', [])
   $scope.data.bit_message = "";
   $scope.data.bit_message_length = "";
   $scope.data.embed_message = "";
+  $scope.data.imageFileName ="";
 
   $scope.$watch('data.message',function(newValue,oldValue){
     if(oldValue===newValue)
@@ -176,7 +177,9 @@ angular.module('starter.controllers', [])
 
     //Store the initialization vector, salt and cipher text in the local database
     window.localStorage.setItem("encrypted_data",JSON.stringify(encryptedData));
-
+    var data = window.localStorage.getItem('encrypted_data');
+    var test = JSON.parse(data);
+    console.log(test.password);
     //Convert the cipher text to bit values by looping through all the characters
     var output = "";
     var temp="";
@@ -190,18 +193,17 @@ angular.module('starter.controllers', [])
     $scope.data.embed_message = ("00000000"+$scope.data.bit_message.length.toString(2)).slice(-10)+$scope.data.bit_message;
     $scope.data.embed_message_length = $scope.data.embed_message.length;
 
-    //Check the encrypted message
-    var alertPopup = $ionicPopup.alert({
-      title: 'Encrypted Message',
-      template: encryptedData.cipher_text.length + " " + encryptedData.cipher_text + $scope.data.embed_message
-    });
+    // //Check the encrypted message
+    // var alertPopup = $ionicPopup.alert({
+    //   title: 'Encrypted Message',
+    //   template: encryptedData.cipher_text.length + " " + encryptedData.cipher_text + $scope.data.embed_message
+    // });
 
     // Image processing process starts from here
     var canvas = document.getElementById('canvas');
     var imageObj = new Image();
     imageObj.src = imgService.getURI();
 	  $scope.imgURI = imgService.getURI();
-	  $scope.imageFileName="";
     //imageObj.src = 'img/darth-vader.jpg';
     canvasWidth  = imgService.getWidth();
     canvasHeight = imgService.getHeight();
@@ -221,14 +223,14 @@ angular.module('starter.controllers', [])
           pix = imageData.data[i];
           data = $scope.data.embed_message[j];
           bit = ("0000000" + pix.toString(2)).slice(-8);
-          console.log("pix value ",pix,i,j," LSB values ",bit,bit[7], data);
+          //console.log("pix value ",pix,i,j," LSB values ",bit,bit[7], data);
 
           if (bit[7] == data) {
           } else {
-            console.log("Before pixel change:", bit, pix);
+            //console.log("Before pixel change:", bit, pix);
             bit = bit.substr(0,7) + data.toString();
             pix = parseInt(bit, 2).toString();
-            console.log("After pixel change:", bit, pix);
+            //console.log("After pixel change:", bit, pix);
           }
 
           imageData.data[i]=pix;
@@ -255,7 +257,7 @@ angular.module('starter.controllers', [])
 
       window.canvas2ImagePlugin.saveImageDataToLibrary(
         function(msg){
-          imageFileName = msg;
+          $scope.data.imageFileName = msg.toString();
           console.log("Imaged saved to URI : "+msg);
         },
         function(err){
@@ -266,7 +268,7 @@ angular.module('starter.controllers', [])
 
       var alertPopup = $ionicPopup.alert({
         title: 'Image file',
-        template: $scope.imageFileName
+        template: $scope.data.imageFileName
       });
 
     };
@@ -366,25 +368,22 @@ angular.module('starter.controllers', [])
         }
         i++;
       }
+        console.log("proceed to get item");
+      var test = window.localStorage.getItem('encrypted_data');
+        var data = JSON.parse(test);
+        //console.log(msg);
+        //console.log(forge.util.decode64(msg));
+        if(data !== undefined){
+          var decipheredText = CipherService.decrypt(msg,data.password,data.salt,data.iv);
 
-      var data = window.localStorage.getItem('encrypted_data');
-        var salt = forge.util.decode64(data.salt);
-        var iv = forge.util.decode64(data.iv);
-        var key = forge.pkcs5.pbkdf2(data.password, salt, 40, 16);
-        var decipher = forge.cipher.createDecipher('AES-CBC', key);
-        decipher.start({iv: iv});
-        decipher.update(forge.util.createBuffer(forge.util.decode64(data.cipher_text)));
-        decipher.finish();
-        var decipheredText = decipher.output.toString();
-
-      //alert("The message is : " + msg);
-      var alertPopup = $ionicPopup.alert({
-        title: 'Decoded Message',
-        template: decipheredText
-      });
-      alertPopup.then(function(res) {
-        console.log('Message length',decipheredText.length);
-      });
+          //alert("The message is : " + msg);
+          var alertPopup = $ionicPopup.alert({
+            title: 'Decoded Message',
+            template: decipheredText
+          });
+        }
+        else
+          console.log('data not deifned');
       }
     };
   }
