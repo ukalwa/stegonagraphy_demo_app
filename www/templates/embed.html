@@ -1,0 +1,17 @@
+<ion-view view-title="Embed Message">
+  <ion-content id="embed" class="padding">
+    <h2>Enter message: </h2>
+      <label class="item item-input">
+        <textarea id="text-area" rows="3" maxlength="50" ng-model="data.message" placeholder="Not more than 50 characters">Type here</textarea>
+      </label>
+    <p class=padding">The message is {{data.message}}</p>
+    <button class="button button-full button-positive" ng-click="getPwd()">Embed</button>
+    <canvas id="canvas" width ="300" height ="300"></canvas>
+  </ion-content>
+  <ion-footer-bar align-title="left" class="bar-assertive">
+    <div class="bar bar-footer ">
+      <a ng-show="imgURI !== undefined" class="button button-full button-positive" ui-sref="app.decode">Decode
+      </a>
+    </div>
+  </ion-footer-bar>
+</ion-view>

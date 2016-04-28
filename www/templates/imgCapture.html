@@ -1,0 +1,18 @@
+<ion-view view-title="Capture Image">
+
+    <ion-content padding="true">
+    <img id="Img" ng-show="imgURI !== undefined" ng-src="{{imgURI}}" style="text-align: center">
+    </ion-content>
+
+    <ion-footer-bar align-title="left" class="bar-assertive">
+      <div class="bar bar-footer ">
+          <button ng-show="imgURI == undefined" class="button button-positive pull-right" ng-click="takePhoto()">Take Photo
+          </button>
+          <button class="button button-positive" ng-click="choosePhoto()">Choose Photo
+          </button>
+          <a ng-show="imgURI !== undefined" class="button button-positive" ui-sref="app.embed">Proceed
+          </a>
+      </div>
+    </ion-footer-bar>
+
+</ion-view>
