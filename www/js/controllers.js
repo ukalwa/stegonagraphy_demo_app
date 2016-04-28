@@ -266,13 +266,7 @@ angular.module('starter.controllers', [])
         canvas
       );
 
-      var alertPopup = $ionicPopup.alert({
-        title: 'Image file',
-        template: $scope.data.imageFileName
-      });
-
     };
-
   }
 
 })
