@@ -25,6 +25,16 @@ To run the app
 ionic serve
 ```
 
+Here are some of the snapshots
+------------------------------
+
+<p float="left">
+  <img src="images/image1.png" width="250" />
+  &nbsp; &nbsp; &nbsp;
+  <img src="images/image2.png" width="250" /> 
+  &nbsp; &nbsp; &nbsp;
+  <img src="images/image3.png" width="250" />
+</p>
 
 License
 ---------
@@ -41,3 +51,5 @@ them!
  [Node.js]: http://nodejs.org
  [Android]: https://cordova.apache.org/docs/en/6.x/guide/platforms/android/
  [iOS]: https://cordova.apache.org/docs/en/6.x/guide/platforms/ios/
+ [image1]: images/image1.png
+ [image2]: images/image2.png
