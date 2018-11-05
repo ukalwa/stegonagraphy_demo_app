@@ -1,47 +1,48 @@
-Steganography App Demo
-=====================
+# Steganography App Demo
 
-This App applies steganography techniques to embed messages in image and send it to your friends.
+This application applies steganography technique to embed and decode messages from images taken by the smartphone.
 
-Requirements
---------------
+## Requirements
 
-*Environment Setup*
+### Environment Setup
 
 - Install [Node.js]
-- Run ``npm install -g cordova ionic``
-- Install development tools by following guides [Android] and [iOS]
+- Install development tools for [Android] and [iOS]
 
-Usage
--------
+## Usage
+
 Clone this repository and change directory
+
 ```bash
-git clone git@bitbucket.org:upender_kalwa/stegoapp.git
-cd StegoApp
+git clone git@bitbucket.org:upender_kalwa/stegonagraphy_demo_app.git
+cd stegonagraphy_demo_app
+```
+
+Install necessary modules
+
+```bash
+npm install cordova ionic
 ```
 
 To run the app
+
 ```bash
 ionic serve
 ```
 
-Here are some of the snapshots
-------------------------------
+## Here are some of the snapshots
 
 ![image1]  &nbsp; &nbsp; &nbsp;  ![image2] &nbsp; &nbsp; &nbsp; ![image3]
 
-License
----------
+## License
 
 This code is GNU GENERAL PUBLIC LICENSED.
 
-Contributing
--------------
+## Contributing
 
 If you have any suggestions or identified bugs please feel free to post
 them!
 
-  
  [Node.js]: http://nodejs.org
  [Android]: https://cordova.apache.org/docs/en/6.x/guide/platforms/android/
  [iOS]: https://cordova.apache.org/docs/en/6.x/guide/platforms/ios/

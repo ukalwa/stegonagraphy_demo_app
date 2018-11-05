@@ -91,7 +91,6 @@ angular.module('starter.controllers', [])
       $scope.imgURI = "data:image/png;base64," + imageData;
       var pic = new Image();
       pic.src = $scope.imgURI;
-      //console.log($scope.imgURI);
       pic.onload = function(){
         imgService.updateHeight(pic.height);
         imgService.updateWidth(pic.width);
@@ -114,21 +113,9 @@ angular.module('starter.controllers', [])
   $scope.data.imageFileName ="";
 
   $scope.$watch('data.message',function(newValue,oldValue){
-    if(oldValue===newValue)
+    if(oldValue === newValue)
       return;
     $scope.data.temp = $scope.data.message;
-  //   var output = "";
-  //   var temp="";
-  //   for (i=0; i < $scope.data.message.length; i++) {
-  //     //console.log($scope.data.message[i],$scope.data.message[i].charCodeAt(0).toString(2));
-  //     temp = ("00" + $scope.data.message[i].charCodeAt(0).toString(2)).slice(-8);
-  //     output += temp;
-  //     //console.log(output.toString(),temp,String.fromCharCode(parseInt(temp,2)));
-  //   }
-  //   $scope.data.bit_message = output.toString();
-  //   $scope.data.embed_message = ("00000000"+$scope.data.bit_message.length.toString(2)).slice(-10)+$scope.data.bit_message;
-  //   $scope.data.embed_message_length = $scope.data.embed_message.length;
-  //   //console.log($scope.data.embed_message, parseInt("0000000000100000",2) );
   });
 
   $scope.getPwd = function(){
@@ -136,7 +123,6 @@ angular.module('starter.controllers', [])
     var myPopup = $ionicPopup.show({
         template: '<input type="password" ng-model="data.password">',
         title: 'Enter Pass phrase',
-        //subTitle: 'Please use normal things',
         scope: $scope,
         buttons: [
           { text: 'Cancel' },
@@ -183,21 +169,13 @@ angular.module('starter.controllers', [])
     //Convert the cipher text to bit values by looping through all the characters
     var output = "";
     var temp="";
-    for (i=0; i < encryptedData.cipher_text.length; i++) {
-      //console.log($scope.data.message[i],$scope.data.message[i].charCodeAt(0).toString(2));
+    for (var i=0; i < encryptedData.cipher_text.length; i++) {
       temp = ("00" + encryptedData.cipher_text[i].charCodeAt(0).toString(2)).slice(-8);
       output += temp;
-      //console.log(output.toString(),temp,String.fromCharCode(parseInt(temp,2)));
     }
     $scope.data.bit_message = output.toString();
     $scope.data.embed_message = ("00000000"+$scope.data.bit_message.length.toString(2)).slice(-10)+$scope.data.bit_message;
     $scope.data.embed_message_length = $scope.data.embed_message.length;
-
-    // //Check the encrypted message
-    // var alertPopup = $ionicPopup.alert({
-    //   title: 'Encrypted Message',
-    //   template: encryptedData.cipher_text.length + " " + encryptedData.cipher_text + $scope.data.embed_message
-    // });
 
     // Image processing process starts from here
     var canvas = document.getElementById('canvas');
@@ -212,31 +190,22 @@ angular.module('starter.controllers', [])
 
       ctx.drawImage(imageObj, 0, 0,canvasWidth,canvasHeight);
       var imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-      //jsfeat.imgproc.grayscale(imageData.data, canvasWidth, canvasHeight, img_u8, code);
-      // render result back to canvas
-      //var data_u32 = new Uint32Array(imageData.data.buffer);
-      //var alpha = (0xff << 24);
       var i = 0 , pix = 0,j=0;
       console.log($scope.data.embed_message_length,i,$scope.data.embed_message);
-      while(j < $scope.data.embed_message_length) {
-        if((i%4)+1 !== 4){
+      var bit;
+      while (j < $scope.data.embed_message_length) {
+        if ((i % 4) + 1 !== 4) {
           pix = imageData.data[i];
           data = $scope.data.embed_message[j];
           bit = ("0000000" + pix.toString(2)).slice(-8);
           //console.log("pix value ",pix,i,j," LSB values ",bit,bit[7], data);
 
-          if (bit[7] == data) {
+          if (bit[7] === data) {
           } else {
-            //console.log("Before pixel change:", bit, pix);
-            bit = bit.substr(0,7) + data.toString();
+            bit = bit.substr(0, 7) + data.toString();
             pix = parseInt(bit, 2).toString();
-            //console.log("After pixel change:", bit, pix);
           }
-
-          imageData.data[i]=pix;
-          // if(i<$scope.data.embed_message_length){
-          //   console.log(imageData.data[i]);
-          // }
+          imageData.data[i] = pix;
 
           j++;
         }
@@ -246,14 +215,7 @@ angular.module('starter.controllers', [])
 
       ctx.putImageData(imageData, 0, 0);
       var canvas = document.getElementById("canvas");
-      // window.savephotoplugin(canvas,"image/png",device.version,function(val){
-      //   //returns you the saved path in val
-      //   alert("Photo Saved: " + val);
-      // });
-      //window.resolveLocalFileSystemURL()
       console.log("Canvas size : ", canvas.height, canvas.width);
-      // //test = imageData.data[10].toString(2);
-      // //console.log(test ,parseInt(test,2));
 
       window.canvas2ImagePlugin.saveImageDataToLibrary(
         function(msg){
@@ -307,13 +269,8 @@ angular.module('starter.controllers', [])
     var msg = "", numInBin = "", msgInBin="";
     var imageObj = new Image();
     imageObj.src = $scope.imgURI;
-    //imageObj.src = 'img/c2i_193201674915.png';
 
     ctx = canvas.getContext('2d');
-    //$scope.imgURI = imgService.getURI();
-
-    //ctx.fillStyle = "rgb(0,255,0)";
-    //ctx.strokeStyle = "rgb(0,255,0)";
 
     imageObj.onload = function() {
 
@@ -321,12 +278,14 @@ angular.module('starter.controllers', [])
       var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
       var i = 0, j=0, msgLength = 0, numLength=10; //Change this if you change msgLength in EmbedCtrl
-      while(j < numLength) {
-        if((i%4)+1 !== 4) {
+      var pix;
+      var bit;
+      while (j < numLength) {
+        if ((i % 4) + 1 !== 4) {
           pix = imageData.data[i];
           //console.log("pix value ",pix,i);
           bit = ("0000000" + pix.toString(2)).slice(-8);
-          console.log("pix value ", pix, i,j, "values ", bit);
+          console.log("pix value ", pix, i, j, "values ", bit);
           numInBin += bit[7].toString();
           console.log("LSB values ", bit[7], numInBin);
           j++;
@@ -334,13 +293,6 @@ angular.module('starter.controllers', [])
         i++;
       }
       msgLength = parseInt(numInBin,2);
-      // var alertPopup2 = $ionicPopup.alert({
-      //     title: 'Message Length',
-      //     template: msgLength+numInBin.toString()
-      //   });
-      //   alertPopup2.then(function(res) {
-      //     console.log(msgLength,numInBin);
-      //   });
 
       console.log(numInBin, msgLength);
       k=0;
@@ -353,7 +305,7 @@ angular.module('starter.controllers', [])
           bit = ("0000000" + pix.toString(2)).slice(-8);
           console.log("pix value ", pix, i,k, "values ", bit);
           msgInBin += bit[7].toString();
-          if((k%8) + 1 == 8){
+          if((k%8) + 1 === 8){
             msg += String.fromCharCode(parseInt(msgInBin,2));
             msgInBin="";
           }
